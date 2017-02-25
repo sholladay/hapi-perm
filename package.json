@@ -1,6 +1,6 @@
 {
   "name": "hapi-perm",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Database storage for web servers.",
   "homepage": "https://github.com/sholladay/hapi-perm",
   "main": "index.js",
