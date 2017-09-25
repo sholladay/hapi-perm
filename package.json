@@ -1,12 +1,12 @@
 {
     "name": "hapi-perm",
     "version": "0.1.0",
-    "description": "Database storage for web servers.",
+    "description": "Database storage for web servers",
     "homepage": "https://github.com/sholladay/hapi-perm",
     "main": "index.js",
     "author": {
         "name": "Seth Holladay",
-        "url": "http://seth-holladay.com",
+        "url": "https://seth-holladay.com",
         "email": "me@seth-holladay.com"
     },
     "scripts": {
