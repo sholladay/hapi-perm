@@ -27,13 +27,14 @@
   "files": [
     "index.js"
   ],
-  "dependencies": {
-    "rethinkdb": "^2.3.3"
+  "peerDependencies": {
+    "rethinkdb": ">=2"
   },
   "devDependencies": {
     "ava": "^0.18.1",
     "eslint-config-tidy": "^0.4.0",
     "hapi": "^16.1.0",
+    "rethinkdb": "^2.3.3",
     "xo": "^0.17.0"
   },
   "keywords": [

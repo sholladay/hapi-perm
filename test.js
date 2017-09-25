@@ -49,8 +49,7 @@ test('without perm', async (t) => {
         plugin : null
     });
 
-    t.false('r' in server);
-    t.false('rconn' in server);
+    t.false('db' in server);
 
     const response = await mockRequest(server);
 

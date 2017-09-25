@@ -37,34 +37,33 @@ server.register(perm)
 Communicate with the database in a route.
 
 ```js
+const r = require('rethinkdb');
 server.route({
     method : 'GET',
     path   : '/',
-    handler(request, reply) {
-        const { r, rconn : conn } = request.server;
-        r.tableList().run(conn, (err, tables) => {
-            if (err) {
-                reply(err);
-                return;
-            }
-            reply(tables);
-        });
+    async handler(request, reply) {
+        const { db } = request.server;
+        const tables = await db(r.tableList());
+        reply(tables);
     }
 })
 ```
 
-The plugin decorates `server` with these properties.
-
- - `r` is the [RethinkDB library](https://www.rethinkdb.com/api/javascript/). Use this to construct a command.
- - `rconn` is the database connection. Use this to [`run()`](https://www.rethinkdb.com/api/javascript/run/) a command.
+In the above example, `r` is the [RethinkDB library](https://www.rethinkdb.com/api/javascript/) used to construct commands. This plugin uses the version installed by your application, as a peer dependency, in order to establish a connection to the database.
 
 ## API
 
-### option
+### Plugin options
 
 Type: `object`
 
-Plugin settings. Same as [r.connect()](https://www.rethinkdb.com/api/javascript/connect/).
+Same as [r.connect()](https://www.rethinkdb.com/api/javascript/connect/).
+
+### Decorations
+
+#### server.db(command)
+
+Returns a `Promise` for the command's completion. Can be used instead of [`command.run(rconn)`](https://www.rethinkdb.com/api/javascript/run/). Useful to avoid needing a reference to the database connection.
 
 ## Contributing
 

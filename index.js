@@ -15,8 +15,9 @@ const register = (server, option, done) => {
             done(err);
             return;
         }
-        server.decorate('server', 'rconn', connection);
-        server.decorate('server', 'r', rethink);
+        server.decorate('server', 'db', (query) => {
+            return query.run(connection);
+        });
         server.on('stop', () => {
             connection.close((err) => {
                 if (err) {
