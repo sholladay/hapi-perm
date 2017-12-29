@@ -1,30 +1,25 @@
 import test from 'ava';
-import { Server } from 'hapi';
+import hapi from 'hapi';
 import perm from '.';
 
 const mockRoute = (option) => {
-    return Object.assign(
-        {
-            method : 'GET',
-            path   : '/',
-            handler(request, reply) {
-                reply('foo');
-            }
+    return {
+        method : 'GET',
+        path   : '/',
+        handler() {
+            return 'foo';
         },
-        option
-    );
+        ...option
+    };
 };
 
 const mockServer = async (option) => {
-    const { plugin, route } = Object.assign(
-        {
-            plugin : perm,
-            route  : mockRoute()
-        },
-        option
-    );
-    const server = new Server();
-    server.connection();
+    const { plugin, route } = {
+        plugin : perm,
+        route  : mockRoute(),
+        ...option
+    };
+    const server = hapi.server();
     if (plugin) {
         await server.register(plugin);
     }
@@ -35,13 +30,11 @@ const mockServer = async (option) => {
 };
 
 const mockRequest = (server, option) => {
-    return server.inject(Object.assign(
-        {
-            method : 'GET',
-            url    : '/'
-        },
-        option
-    ));
+    return server.inject({
+        method : 'GET',
+        url    : '/',
+        ...option
+    });
 };
 
 test('without perm', async (t) => {

@@ -1,12 +1,15 @@
-# hapi-perm [![Build status for hapi-perm](https://img.shields.io/circleci/project/sholladay/hapi-perm/master.svg "Build Status")](https://circleci.com/gh/sholladay/hapi-perm "Builds")
+# hapi-perm [![Build status for hapi Perm](https://img.shields.io/circleci/project/sholladay/hapi-perm/master.svg "Build Status")](https://circleci.com/gh/sholladay/hapi-perm "Builds")
 
-> Database storage for web servers
+> [RethinkDB](https://rethinkdb.com) storage for [hapi](https://hapijs.com/) web servers
+
+This hapi plugin makes it easy to connect to a RethinkDB database and run queries against it, from route handlers and anywhere else you can access the `server` instance.
 
 ## Why?
 
- - Stores data in [RethinkDB](https://rethinkdb.com/).
+ - Stores data in [RethinkDB](https://rethinkdb.com).
  - Shares a database connection across routes.
- - Decorates the server for convenience.
+ - Decorates the server to make queries easier.
+ - Eliminates the repetitive use of `.run(conn)`.
 
 ## Install
 
@@ -16,40 +19,39 @@ npm install hapi-perm --save
 
 ## Usage
 
-Get it into your program.
+Register the plugin on your server to connect to your database and make the `server.db(query)` helper function available.
 
 ```js
-const perm = require('hapi-perm');
-```
-
-Register the plugin on your server.
-
-```js
-server.register(perm)
-    .then(() => {
-        return server.start();
-    })
-    .then(() => {
-        console.log(server.info.uri);
-    });
-```
-
-Communicate with the database in a route.
-
-```js
+const hapi = require('hapi');
+const perm = require('hapi-zebra');
 const r = require('rethinkdb');
-server.route({
-    method : 'GET',
-    path   : '/',
-    async handler(request, reply) {
-        const { db } = request.server;
-        const tables = await db(r.tableList());
-        reply(tables);
-    }
-})
+
+const server = hapi.server();
+
+const init = async () => {
+    await server.register({
+        plugin  : perm,
+        options : {
+            password : process.env.DB_PASSWORD
+        }
+    });
+    server.route({
+        method : 'GET',
+        path   : '/',
+        async handler(request) {
+            const { db } = request.server;
+            const tables = await db(r.tableList());
+            return tables;
+        }
+    });
+    await server.start();
+    console.log('Server ready:', server.info.uri);
+};
+
+init();
 ```
 
-In the above example, `r` is the [RethinkDB library](https://rethinkdb.com/api/javascript/) used to construct queries. This plugin uses the version installed by your application, as a peer dependency, in order to establish a connection to the database.
+In the example above, `r` is the [RethinkDB library](https://rethinkdb.com/api/javascript/) used to construct queries. Behind the scenes, this plugin [connects](https://rethinkdb.com/api/javascript/connect/) to the database using the version of `r` installed by your application. This gives you full control over the connection options.
 
 ## API
 
@@ -57,13 +59,15 @@ In the above example, `r` is the [RethinkDB library](https://rethinkdb.com/api/j
 
 Type: `object`
 
-Same as [`r.connect()`](https://rethinkdb.com/api/javascript/connect/).
+Passed directly to [`r.connect()`](https://rethinkdb.com/api/javascript/connect/) to configure the database connection. See the RethinkDB documentation for details.
 
 ### Decorations
 
+For convenience, this plugin adds the following API to the hapi server instance.
+
 #### server.db(query)
 
-Returns a `Promise` for the query's completion. Can be used instead of [`query.run(conn)`](https://rethinkdb.com/api/javascript/run/). Useful to avoid needing a reference to the database connection.
+Returns a `Promise` for the query's completion. Can be used instead of [`query.run(conn)`](https://rethinkdb.com/api/javascript/run/). Useful to avoid needing a reference to the database connection. This is available as `request.server.db(query)` inside of route handlers.
 
 ## Contributing
 
