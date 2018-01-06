@@ -23,7 +23,7 @@ Register the plugin on your server to connect to your database and make the `ser
 
 ```js
 const hapi = require('hapi');
-const perm = require('hapi-zebra');
+const perm = require('hapi-perm');
 const r = require('rethinkdb');
 
 const server = hapi.server();
