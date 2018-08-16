@@ -52,5 +52,5 @@ test('without perm', async (t) => {
 
 test('error if unable to connect', async (t) => {
     const err = await t.throws(mockServer());
-    t.is(err.message, 'Unable to reach RethinkDB at 127.0.0.1:28015');
+    t.is(err.message, 'Unable to reach RethinkDB at localhost:28015');
 });
