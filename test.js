@@ -82,10 +82,3 @@ test('server.db() runs a query and returns a cursor', async (t) => {
     const unicorns = await cursor.toArray();
     t.deepEqual(unicorns, seed.unicorns);
 });
-test('server.dbCursor() runs a query and returns a cursor and done callback', async (t) => {
-    const server = await makeServer();
-    const { cursor, done } = await server.dbCursor(r.table('unicorns'));
-    const unicorns = await cursor.toArray();
-    t.notThrows(done);
-    t.deepEqual(unicorns, seed.unicorns);
-});

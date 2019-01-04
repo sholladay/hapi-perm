@@ -10,6 +10,7 @@ This hapi plugin makes it easy to connect to a RethinkDB database and run querie
  - Shares a database connection across routes.
  - Decorates the server to make queries easier.
  - Eliminates the repetitive use of `.run(conn)`.
+ - Reconnects automatically on connection failures.
 
 ## Install
 

@@ -16,47 +16,30 @@ const createConnection = (config) => {
 };
 
 const register = async (server, option) => {
-    const pool = new Set();
+    let connection;
     const getConnection = async () => {
-        for (const connection of pool) {
-            pool.delete(connection);
-            if (connection.isOpen()) {
-                return connection;
-            }
+        if (connection && connection.isOpen()) {
+            return connection;
         }
-        // TODO: What if there are many outstanding connections not in the pool?
-        //       Maybe track those and implement a max connections ceiling.
-        const connection = await createConnection(option);
+        const newConn = await createConnection(option);
         const deleteConnection = () => {
-            pool.delete(connection);
+            connection = null;
         };
-        connection.once('close', deleteConnection);
-        connection.once('timeout', deleteConnection);
-        connection.once('error', deleteConnection);
-        return connection;
+        newConn.once('close', deleteConnection);
+        newConn.once('timeout', deleteConnection);
+        newConn.once('error', deleteConnection);
+        return newConn;
     };
 
-    pool.add(await getConnection());
+    connection = await getConnection();
 
     server.decorate('server', 'db', async (query) => {
-        const connection = await getConnection();
+        connection = await getConnection();
         const result = await query.run(connection);
-        pool.add(connection);
         return result;
     });
-    server.decorate('server', 'dbCursor', async (query) => {
-        const connection = await getConnection();
-        const cursor = await query.run(connection);
-        return {
-            cursor,
-            done() {
-                pool.add(connection);
-            }
-        };
-    });
     server.events.on('stop', () => {
-        for (const connection of pool) {
-            pool.delete(connection);
+        if (connection) {
             connection.close((err) => {
                 if (err) {
                     throw err;
