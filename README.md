@@ -1,4 +1,4 @@
-# hapi-perm [![Build status for hapi Perm](https://img.shields.io/circleci/project/sholladay/hapi-perm/master.svg "Build Status")](https://circleci.com/gh/sholladay/hapi-perm "Builds")
+# hapi-perm [![Build status for hapi Perm](https://travis-ci.com/sholladay/hapi-perm.svg?branch=master "Build Status")](https://travis-ci.com/sholladay/hapi-perm "Builds")
 
 > [RethinkDB](https://rethinkdb.com) storage for [hapi](https://hapijs.com/) web servers
 
