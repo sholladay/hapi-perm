@@ -32,11 +32,11 @@
         "rethinkdb": ">=2"
     },
     "devDependencies": {
-        "ava": "^0.24.0",
-        "eslint-config-tidy": "^0.5.0",
+        "ava": "^1.0.1",
+        "eslint-config-tidy": "^0.7.0",
         "hapi": "^17.2.0",
         "rethinkdb": "^2.3.3",
-        "xo": "^0.18.0"
+        "xo": "^0.23.0"
     },
     "keywords": [
         "hapi",

@@ -4,14 +4,14 @@ const rethink = require('rethinkdb');
 const pkg = require('./package.json');
 
 const createConnection = (config) => {
-    return rethink.connect(config).catch((err) => {
-        if (err.message.includes('ECONNREFUSED')) {
-            const end = err.message.indexOf('.\n');
-            const start = err.message.lastIndexOf(' ', end) + 1;
-            const host = err.message.substring(start, end);
+    return rethink.connect(config).catch((error) => {
+        if (error.message.includes('ECONNREFUSED')) {
+            const end = error.message.indexOf('.\n');
+            const start = error.message.lastIndexOf(' ', end) + 1;
+            const host = error.message.substring(start, end);
             throw new Error('Unable to reach RethinkDB at ' + host);
         }
-        throw err;
+        throw error;
     });
 };
 
