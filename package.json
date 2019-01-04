@@ -36,6 +36,7 @@
         "eslint-config-tidy": "^0.7.0",
         "hapi": "^17.2.0",
         "rethinkdb": "^2.3.3",
+        "thinkable": "^0.1.0",
         "xo": "^0.23.0"
     },
     "keywords": [
