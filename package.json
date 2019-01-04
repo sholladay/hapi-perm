@@ -1,6 +1,6 @@
 {
     "name": "hapi-perm",
-    "version": "1.0.1",
+    "version": "2.0.0",
     "description": "RethinkDB storage for hapi web servers",
     "homepage": "https://github.com/sholladay/hapi-perm",
     "main": "index.js",
