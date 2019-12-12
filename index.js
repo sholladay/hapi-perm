@@ -8,7 +8,7 @@ const createConnection = (config) => {
         if (error.message.includes('ECONNREFUSED')) {
             const end = error.message.indexOf('.\n');
             const start = error.message.lastIndexOf(' ', end) + 1;
-            const host = error.message.substring(start, end);
+            const host = error.message.slice(start, end);
             throw new Error('Unable to reach RethinkDB at ' + host);
         }
         throw error;

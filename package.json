@@ -28,16 +28,16 @@
         "index.js"
     ],
     "peerDependencies": {
-        "hapi": ">=17",
+        "@hapi/hapi": ">=18",
         "rethinkdb": ">=2"
     },
     "devDependencies": {
-        "ava": "^1.0.1",
-        "eslint-config-tidy": "^0.7.0",
-        "hapi": "^17.2.0",
-        "rethinkdb": "^2.3.3",
-        "thinkable": "^0.1.0",
-        "xo": "^0.23.0"
+        "@hapi/hapi": "^18.4.0",
+        "ava": "^2.4.0",
+        "eslint-config-tidy": "^0.10.0",
+        "rethinkdb": "^2.4.1",
+        "thinkable": "^0.2.0",
+        "xo": "^0.25.3"
     },
     "keywords": [
         "hapi",

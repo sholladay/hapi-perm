@@ -15,7 +15,7 @@ This hapi plugin makes it easy to connect to a RethinkDB database and run querie
 ## Install
 
 ```sh
-npm install hapi-perm --save
+npm install hapi-perm
 ```
 
 ## Usage
@@ -23,7 +23,7 @@ npm install hapi-perm --save
 Register the plugin on your server to connect to your database and make the `server.db(query)` helper function available.
 
 ```js
-const hapi = require('hapi');
+const hapi = require('@hapi/hapi');
 const perm = require('hapi-perm');
 const r = require('rethinkdb');
 
