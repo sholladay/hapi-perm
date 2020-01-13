@@ -3,16 +3,14 @@
 const rethink = require('rethinkdb');
 const pkg = require('./package.json');
 
-const createConnection = (config) => {
-    return rethink.connect(config).catch((error) => {
-        if (error.message.includes('ECONNREFUSED')) {
-            const end = error.message.indexOf('.\n');
-            const start = error.message.lastIndexOf(' ', end) + 1;
-            const host = error.message.slice(start, end);
-            throw new Error('Unable to reach RethinkDB at ' + host);
-        }
-        throw error;
-    });
+const handleConnectionError = (error) => {
+    if (error.message.includes('ECONNREFUSED')) {
+        const end = error.message.indexOf('.\n');
+        const start = error.message.lastIndexOf(' ', end) + 1;
+        const host = error.message.slice(start, end);
+        throw new Error('Unable to reach RethinkDB at ' + host);
+    }
+    throw error;
 };
 
 const register = async (server, option) => {
@@ -21,7 +19,7 @@ const register = async (server, option) => {
         if (connection && connection.isOpen()) {
             return connection;
         }
-        const newConn = await createConnection(option);
+        const newConn = await rethink.connect(option).catch(handleConnectionError);
         const deleteConnection = () => {
             connection = null;
         };

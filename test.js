@@ -67,6 +67,11 @@ test('error if unable to connect', async (t) => {
     t.is(err.message, 'Unable to reach RethinkDB at localhost:1234');
 });
 
+test('server can initialize', async (t) => {
+    const server = await makeServer();
+    await t.notThrowsAsync(server.initialize());
+});
+
 test('server.db() runs a query and returns a document', async (t) => {
     const server = await makeServer({
         plugin : {
